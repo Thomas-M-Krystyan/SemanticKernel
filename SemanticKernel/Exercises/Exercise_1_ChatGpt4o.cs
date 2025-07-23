@@ -1,11 +1,11 @@
 ﻿using OpenAI;
-using System.ClientModel;
+using OpenAI.Chat;
 
 namespace SemanticKernel.Exercises
 {
     internal static class Exercise_1_ChatGpt4o
     {
-        internal static ClientResult Run(OpenAIClient openAiClient)
+        internal static ChatCompletion Run(OpenAIClient openAiClient)
         {
             // Resolve deployment
             var chatGpt4o = openAiClient.GetChatClient("gpt-4o");
