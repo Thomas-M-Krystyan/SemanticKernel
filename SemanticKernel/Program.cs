@@ -13,14 +13,15 @@ namespace SemanticKernel
             // Load "secrets.json" configuration
             var configuration = ConfigureApp();
 
-            // Deployments
-            var deploymentGpt4o = GetDeployment_Gpt4o(configuration);
-
             // Azure OpenAI Client
-            var azureClient = new AzureOpenAIClient(deploymentGpt4o.Endpoint, new AzureKeyCredential(deploymentGpt4o.ApiKey));
+            var azureOpenAI = GetSecret_AzureOpenAI(configuration);
 
-            // Chat Client
-            var chatClient = azureClient.GetChatClient(deploymentGpt4o.Name);
+            var azureClient = new AzureOpenAIClient(
+                azureOpenAI.Endpoint,
+                new AzureKeyCredential(azureOpenAI.ApiKey));
+
+            // Deployments
+            var chatGpt4o = azureClient.GetChatClient("gpt-4o");
         }
 
         private static IConfigurationRoot ConfigureApp()
@@ -30,15 +31,14 @@ namespace SemanticKernel
                 .Build();
         }
 
-        private static (string Name, Uri Endpoint, string ApiKey) GetDeployment_Gpt4o(IConfigurationRoot configuration)
+        private static (Uri Endpoint, string ApiKey) GetSecret_AzureOpenAI(IConfigurationRoot configuration)
         {
-            var gpt4o = configuration.GetSection("AzureOpenAI:Deployments:GPT-4o");
+            var gpt4o = configuration.GetSection("AzureOpenAI");
 
-            var deploymentName = gpt4o["DeploymentName"]!;
             var endpoint = new Uri(gpt4o["Endpoint"]!);
             var apiKey = gpt4o["ApiKey"]!;
 
-            return (deploymentName, endpoint, apiKey);
+            return (endpoint, apiKey);
         }
     }
 }
