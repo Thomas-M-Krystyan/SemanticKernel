@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "type": "secrets.user"
+    },
+    "secrets2": {
+      "secretStore": null,
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.KeyVault/vaults/SemanticKernelVault",
+      "type": "secrets.keyVault",
+      "connectionId": "AzureKeyVault_SemanticKernel_Endpoint",
+      "dynamicId": null
+    }
+  }
+}
