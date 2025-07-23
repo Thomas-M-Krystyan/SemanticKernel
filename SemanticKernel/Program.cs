@@ -1,6 +1,7 @@
 ﻿using Azure;
 using Azure.AI.OpenAI;
 using Microsoft.Extensions.Configuration;
+using OpenAI;
 using SemanticKernel.Extensions;
 
 namespace SemanticKernel
@@ -17,12 +18,13 @@ namespace SemanticKernel
             // Azure OpenAI Client
             var azureOpenAI = configuration.GetSecret_AzureOpenAI();
 
-            var azureClient = new AzureOpenAIClient(
+            OpenAIClient azureClient = new AzureOpenAIClient(
                 azureOpenAI.Endpoint,
                 new AzureKeyCredential(azureOpenAI.ApiKey));
 
             // Deployments
             var chatGpt4o = azureClient.GetChatClient("gpt-4o");
+            var imageDallE3 = azureClient.GetImageClient("dall-e-3");
         }
 
         private static IConfigurationRoot ConfigureApp()
