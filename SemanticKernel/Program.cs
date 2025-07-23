@@ -14,13 +14,13 @@ namespace SemanticKernel
             var configuration = ConfigureApp();
 
             // Deployments
-            var deployment = GetDeployment_Gpt4o(configuration);
+            var deploymentGpt4o = GetDeployment_Gpt4o(configuration);
 
             // Azure OpenAI Client
-            var azureClient = new AzureOpenAIClient(deployment.Endpoint, new AzureKeyCredential(deployment.ApiKey));
+            var azureClient = new AzureOpenAIClient(deploymentGpt4o.Endpoint, new AzureKeyCredential(deploymentGpt4o.ApiKey));
 
             // Chat Client
-            var chatClient = azureClient.GetChatClient(deployment.Name);
+            var chatClient = azureClient.GetChatClient(deploymentGpt4o.Name);
         }
 
         private static IConfigurationRoot ConfigureApp()
