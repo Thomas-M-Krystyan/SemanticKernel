@@ -2,7 +2,6 @@
 using Azure.AI.OpenAI;
 using Microsoft.Extensions.Configuration;
 using OpenAI;
-using OpenAI.Chat;
 using SemanticKernel.Exercises;
 using SemanticKernel.Extensions;
 
@@ -10,7 +9,7 @@ namespace SemanticKernel
 {
     internal class Program
     {
-        private static void Main(string[] _)
+        private static async Task Main(string[] _)
         {
             // TODO: Differentiate between environments to use local settings or Azure Key Vault
 
@@ -25,7 +24,7 @@ namespace SemanticKernel
                 new AzureKeyCredential(azureOpenAI.ApiKey));
 
             // Exercises:
-            var result = Exercise_1_ChatGpt4o.Run(azureClient);
+            var result = await Exercise_1_ChatGpt4o.RunAsync(azureClient);
 
             // Deployments
             var imageDallE3 = azureClient.GetImageClient("dall-e-3");

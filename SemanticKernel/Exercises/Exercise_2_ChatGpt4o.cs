@@ -5,7 +5,7 @@ namespace SemanticKernel.Exercises
 {
     internal static class Exercise_2_ChatGpt4o
     {
-        internal static ChatCompletion Run(OpenAIClient openAiClient)
+        internal static async Task<ChatCompletion> RunAsync(OpenAIClient openAiClient)
         {
             // Resolve deployment
             var chatGpt4o = openAiClient.GetChatClient("gpt-4o");
@@ -24,7 +24,7 @@ namespace SemanticKernel.Exercises
                 new UserChatMessage("I am going to Madrid for a couple of years. What should I see there?")
             };
 
-            var result = chatGpt4o.CompleteChat(messages, requestOptions);
+            var result = await chatGpt4o.CompleteChatAsync(messages, requestOptions);
 
             return result;
         }
