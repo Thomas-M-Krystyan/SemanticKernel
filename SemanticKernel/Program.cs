@@ -3,6 +3,7 @@ using Azure.AI.OpenAI;
 using Microsoft.Extensions.Configuration;
 using OpenAI;
 using OpenAI.Chat;
+using SemanticKernel.Exercises;
 using SemanticKernel.Extensions;
 
 namespace SemanticKernel
@@ -22,6 +23,9 @@ namespace SemanticKernel
             OpenAIClient azureClient = new AzureOpenAIClient(
                 azureOpenAI.Endpoint,
                 new AzureKeyCredential(azureOpenAI.ApiKey));
+
+            // Exercises:
+            var clientResult = Exercise_1_ChatGpt4o.Run(azureClient);
 
             // Deployments
             var chatGpt4o = azureClient.GetChatClient("gpt-4o");
