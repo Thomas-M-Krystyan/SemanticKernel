@@ -1,24 +1,44 @@
 ﻿using Azure;
 using Azure.AI.OpenAI;
-using OpenAI.Chat;
+using Microsoft.Extensions.Configuration;
 
 namespace SemanticKernel
 {
-    internal static class Program
+    internal class Program
     {
-        private static void Main(string[] args)
+        private static void Main(string[] _)
         {
-            Console.WriteLine("Hello, World!");
+            // TODO: Differentiate between environments to use local settings or Azure Key Vault
 
-            var endpoint = new Uri("https://thoma-mdepts9j-swedencentral.cognitiveservices.azure.com/");
-            var model = "gpt-4o";
-            var deploymentName = "gpt-4o";
-            var apiKey = "<your-api-key>";
+            // Load "secrets.json" configuration
+            var configuration = ConfigureApp();
 
-            AzureOpenAIClient azureClient = new(
-                endpoint,
-                new AzureKeyCredential(apiKey));
-            ChatClient chatClient = azureClient.GetChatClient(deploymentName);
+            // Deployments
+            var (deploymentName, endpoint, apiKey) = GetDeployment_Gpt4o(configuration);
+
+            // Azure OpenAI Client
+            var azureClient = new AzureOpenAIClient(endpoint, new AzureKeyCredential(apiKey));
+
+            // Chat Client
+            var chatClient = azureClient.GetChatClient(deploymentName);
+        }
+
+        private static IConfigurationRoot ConfigureApp()
+        {
+            return new ConfigurationBuilder()
+                .AddUserSecrets<Program>() // Loads secrets.json for this project
+                .Build();
+        }
+
+        private static (string Name, Uri Endpoint, string ApiKey) GetDeployment_Gpt4o(IConfigurationRoot configuration)
+        {
+            var gpt4o = configuration.GetSection("AzureOpenAI:Deployments:GPT-4o");
+
+            var deploymentName = gpt4o["DeploymentName"]!;
+            var endpoint = new Uri(gpt4o["Endpoint"]!);
+            var apiKey = gpt4o["ApiKey"]!;
+
+            return (deploymentName, endpoint, apiKey);
         }
     }
 }
